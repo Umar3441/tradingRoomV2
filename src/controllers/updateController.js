@@ -54,7 +54,7 @@ module.exports = catchAsync(async () => {
 
         for (let index = 0; index < data.length; index++) {
             const el = data[index];
-            await axios.post(`http://localhost:5000/api/trading-room-v2/data?coinpair=${el}&call=1&timeframe=${timeframe}&limit=1000`)
+            await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=1&timeframe=${timeframe}&limit=1000`)
         }
 
 
@@ -88,7 +88,7 @@ module.exports = catchAsync(async () => {
         cron.schedule(crontime, catchAsync(async () => {
             for (let index = 0; index < data.length; index++) {
                 const el = data[index];
-                await axios.post(`http://localhost:5000/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=4`)
+                await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=4`)
             }
         }));
 
