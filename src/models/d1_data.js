@@ -17,6 +17,7 @@ const schema = new mongoose.Schema({
             close: String,
             volume: String,
             closeTime: String,
+            QuoteAssetvolume: String
         }
     ]
 })
