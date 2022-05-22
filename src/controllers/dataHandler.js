@@ -75,15 +75,6 @@ exports.dataHandler = async (req, res, next) => {
             console.log(error)
             res.send(error)
         }
-
-
-
-
-
-
-
-
-
     } else {
 
         try {
