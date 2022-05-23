@@ -91,17 +91,17 @@ module.exports = async () => {
 
 
 
-        cron.schedule(crontime, catchAsync(async () => {
-            for (let index = 0; index < data.length; index++) {
-                const el = data[index];
+        // cron.schedule(crontime, catchAsync(async () => {
+        //     for (let index = 0; index < data.length; index++) {
+        //         const el = data[index];
 
-                try {
-                    await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=3`)
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-        }));
+        //         try {
+        //             await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=3`)
+        //         } catch (error) {
+        //             console.log(error)
+        //         }
+        //     }
+        // }));
 
 
 
