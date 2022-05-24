@@ -4,9 +4,13 @@ var cors = require('cors')
 require('dotenv').config()
 const mongoose = require('mongoose')
 const dataRouter = require('./src/routes/data_router')
+
 const errorHandler = require('./src/controllers/errorController')
 const AppError = require('./src/utils/appError')
 const updateController = require('./src/controllers/updateController')
+
+
+
 
 const app = express();
 
@@ -22,7 +26,12 @@ app.use(express.json());
 
 
 const url = process.env.mongo_link;
-const connection = mongoose.connect(process.env.mongo_link).then(
+
+
+
+
+
+const connection = mongoose.connect(process.env.mongo_link, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     async () => {
         console.log('connected to database')
         updateController()
@@ -34,6 +43,7 @@ const connection = mongoose.connect(process.env.mongo_link).then(
 
 
 app.use('/api/trading-room-v2/data', dataRouter)
+
 
 
 
@@ -55,6 +65,9 @@ let port = process.env.PORT || 5000
 app.listen(port, () => {
     console.log(`listening: ${port}`)
 })
+
+
+
 
 
 

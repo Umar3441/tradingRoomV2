@@ -83,7 +83,7 @@ exports.dataHandler = async (req, res, next) => {
 
             const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${query.coinpair}&interval=${query.timeframe}&limit=${query.limit * 1}`)
 
-            const requiredData = results.data.map(
+            let requiredData = results.data.map(
                 el => {
                     return {
                         openTime: el[0],
@@ -97,10 +97,6 @@ exports.dataHandler = async (req, res, next) => {
                     }
                 }
             )
-
-
-
-
 
 
 
@@ -133,18 +129,48 @@ exports.dataHandler = async (req, res, next) => {
 
             requiredData.pop();
 
+            const latest = requiredData.pop()
+            console.log(requiredData)
+            console.log("before", requiredData.length)
 
 
 
             const previousCandels = await tf.findOne({ symbol: query.coinpair })
 
-            let tempPreviousData = previousCandels.data[previousCandels.data.length - 1]
+            let tempPreviousData = previousCandels.data.splice(previousCandels.data.length - 10, previousCandels.data.length)
 
-            const isSame = requiredData[0].closeTime === tempPreviousData.closeTime
 
-            if (isSame) {
-                requiredData.shift()
+
+
+            let dm = []
+
+            let arr3 = requiredData;
+
+
+            for (let index = 0; index < arr3.length; index++) {
+                const element = arr3[index];
+
+                for (let ind = 0; ind < tempPreviousData.length; ind++) {
+                    const element1 = tempPreviousData[ind];
+
+                    if (element.closeTime * 1 === element1.closeTime * 1) {
+                        // dm.push(element)
+                        requiredData = requiredData.filter(el => el.closeTime * 1 !== element1.closeTime * 1);
+                    }
+                }
             }
+
+            requiredData.push(latest);
+
+            console.log('--->', requiredData.length)
+
+
+
+
+
+
+
+
 
 
             await tf.updateOne(

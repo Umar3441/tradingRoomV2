@@ -13,31 +13,20 @@ const m5_data = require('../models/m5_data')
 const m15_data = require('../models/m15_data')
 const m30_data = require('../models/m30_data')
 var cron = require('node-cron');
+const coins = require('../utils/data')
 
+const server = 1
 
-const data = [
-    'BTCUSDT', 'ETHUSDT',
-    'BNBUSDT', 'BCCUSDT', 'NEOUSDT',
-    'LTCUSDT', 'QTUMUSDT', 'ADAUSDT', 'XRPUSDT', 'EOSUSDT',
-    'TUSDUSDT', 'IOTAUSDT', 'XLMUSDT', 'ONTUSDT', 'TRXUSDT',
-    'ETCUSDT', 'ICXUSDT', 'VENUSDT', 'NULSUSDT', 'VETUSDT',
-    'PAXUSDT', 'BCHABCUSDT', 'BCHSVUSDT', 'USDCUSDT', 'LINKUSDT',
-    'WAVESUSDT', 'BTTUSDT', 'USDSUSDT', 'ONGUSDT', 'HOTUSDT',
-    'ZILUSDT', 'ZRXUSDT', 'FETUSDT', 'BATUSDT', 'XMRUSDT',
-    'ZECUSDT', 'IOSTUSDT', 'CELRUSDT', 'DASHUSDT', 'NANOUSDT',
-    'OMGUSDT', 'THETAUSDT', 'ENJUSDT', 'MITHUSDT', 'MATICUSDT',
-    'ATOMUSDT', 'TFUELUSDT', 'ONEUSDT', 'FTMUSDT', 'ALGOUSDT',
-    'USDSBUSDT', 'GTOUSDT', 'ERDUSDT', 'DOGEUSDT', 'DUSKUSDT',
-    'ANKRUSDT', 'WINUSDT', 'COSUSDT', 'NPXSUSDT', 'COCOSUSDT',
-    'MTLUSDT', 'TOMOUSDT', 'PERLUSDT', 'DENTUSDT', 'MFTUSDT',
-    'KEYUSDT', 'STORMUSDT', 'DOCKUSDT', 'WANUSDT', 'FUNUSDT',
-    'CVCUSDT', 'CHZUSDT', 'BANDUSDT', 'BUSDUSDT', 'BEAMUSDT',
-    'XTZUSDT', 'RENUSDT', 'RVNUSDT', 'HCUSDT', 'HBARUSDT',
-    'NKNUSDT', 'STXUSDT', 'KAVAUSDT', 'ARPAUSDT', 'IOTXUSDT',
-    'RLCUSDT', 'MCOUSDT', 'CTXCUSDT', 'BCHUSDT', 'TROYUSDT',
-    'VITEUSDT', 'FTTUSDT', 'BUSDTRY', 'USDTTRY', 'USDTRUB',
-    'EURUSDT', 'OGNUSDT', 'DREPUSDT', 'BULLUSDT', 'BEARUSDT'
-]
+let data = coins.usdtCoins.slice(0, 100)
+
+if (server === 1) {
+    data = coins.usdtCoins.slice(0, 100)
+} else if (server === 2) {
+    data = coins.usdtCoins.slice(100, 200)
+} else if (server === 3) {
+    data = coins.usdtCoins.slice(200, 300)
+}
+
 
 module.exports = async () => {
 
@@ -91,17 +80,17 @@ module.exports = async () => {
 
 
 
-        // cron.schedule(crontime, catchAsync(async () => {
-        //     for (let index = 0; index < data.length; index++) {
-        //         const el = data[index];
+        cron.schedule(crontime, catchAsync(async () => {
+            for (let index = 0; index < data.length; index++) {
+                const el = data[index];
 
-        //         try {
-        //             await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=3`)
-        //         } catch (error) {
-        //             console.log(error)
-        //         }
-        //     }
-        // }));
+                try {
+                    await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=12`)
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }));
 
 
 
