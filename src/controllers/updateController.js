@@ -89,7 +89,7 @@ module.exports = async () => {
                 const el = data[index];
 
                 try {
-                    await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=12`)
+                    await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=3`)
                 } catch (error) {
                     console.log(error)
                 }
