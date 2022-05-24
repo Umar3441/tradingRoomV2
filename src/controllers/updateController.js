@@ -15,7 +15,7 @@ const m30_data = require('../models/m30_data')
 var cron = require('node-cron');
 const coins = require('../utils/data')
 
-const server = 2
+const server = 1
 
 let data = coins.usdtCoins.slice(0, 100)
 
