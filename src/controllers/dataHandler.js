@@ -15,6 +15,7 @@ exports.dataHandler = async (req, res, next) => {
     const query = req.query
     console.log(query.coinpair)
 
+
     if (query.call === '1') {
         try {
             const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${query.coinpair}&interval=${query.timeframe}&limit=${query.limit * 1}`)
