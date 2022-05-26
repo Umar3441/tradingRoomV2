@@ -9,16 +9,10 @@ const schema = new mongoose.Schema({
 
     },
     data: [
-        {
-            openTime: String,
-            open: String,
-            high: String,
-            low: String,
-            close: String,
-            volume: String,
-            closeTime: String,
-            QuoteAssetvolume: String
-        }
+        [String,
+            { _id: false }
+        ],
+
     ]
 })
 module.exports = mongoose.model('d1_data', schema, 'd1_data')

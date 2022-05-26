@@ -21,16 +21,14 @@ exports.dataHandler = async (req, res, next) => {
             const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${query.coinpair}&interval=${query.timeframe}&limit=${query.limit * 1}`)
             const requiredData = results.data.map(
                 el => {
-                    return {
-                        openTime: el[0],
-                        open: el[1],
-                        high: el[2],
-                        low: el[3],
-                        close: el[4],
-                        volume: el[5],
-                        closeTime: el[6],
-                        QuoteAssetvolume: el[7]
-                    }
+                    return [el[0],
+                    el[1],
+                    el[2],
+                    el[3],
+                    el[4],
+                    el[5],
+                    el[6],
+                    el[7]]
                 }
             )
 
@@ -86,16 +84,15 @@ exports.dataHandler = async (req, res, next) => {
 
             let requiredData = results.data.map(
                 el => {
-                    return {
-                        openTime: el[0],
-                        open: el[1],
-                        high: el[2],
-                        low: el[3],
-                        close: el[4],
-                        volume: el[5],
-                        closeTime: el[6],
-                        QuoteAssetvolume: el[7]
-                    }
+                    return [el[0],
+                    el[1],
+                    el[2],
+                    el[3],
+                    el[4],
+                    el[5],
+                    el[6],
+                    el[7]]
+
                 }
             )
 
@@ -177,7 +174,7 @@ exports.dataHandler = async (req, res, next) => {
 
             let tempPreviousData = previousCandels.data[previousCandels.data.length - 1]
 
-            const isSame = requiredData[0].closeTime === tempPreviousData.closeTime
+            const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
 
             if (isSame) {
                 requiredData.shift()
