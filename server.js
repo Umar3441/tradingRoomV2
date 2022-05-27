@@ -34,7 +34,7 @@ const url = process.env.mongo_link;
 const connection = mongoose.connect(process.env.mongo_link, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     async () => {
         console.log('connected to database')
-        updateController()
+        // updateController()
 
     }
 ).catch(

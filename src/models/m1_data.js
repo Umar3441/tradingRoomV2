@@ -9,7 +9,7 @@ const schema = new mongoose.Schema({
 
     },
     data: [
-        [{ type: String }]
+        [String]
     ]
 })
 module.exports = mongoose.model('m1_data', schema, 'm1_data')

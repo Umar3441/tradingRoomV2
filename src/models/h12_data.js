@@ -9,10 +9,7 @@ const schema = new mongoose.Schema({
 
     },
     data: [
-        [String,
-            { _id: false }
-        ],
-
+        [String]
     ]
 })
 module.exports = mongoose.model('h12_data', schema, 'h12_data')

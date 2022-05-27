@@ -21,13 +21,13 @@ exports.dataHandler = async (req, res, next) => {
             const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${query.coinpair}&interval=${query.timeframe}&limit=${query.limit * 1}`)
             const requiredData = results.data.map(
                 el => {
-                    return [el[0],
+                    return [el[0].toString(),
                     el[1],
                     el[2],
                     el[3],
                     el[4],
                     el[5],
-                    el[6],
+                    el[6].toString(),
                     el[7]]
                 }
             )
@@ -40,6 +40,8 @@ exports.dataHandler = async (req, res, next) => {
                 symbol: query.coinpair,
                 data: requiredData
             }
+
+            console.log(finalObject)
 
             let tf = null
 
@@ -84,13 +86,13 @@ exports.dataHandler = async (req, res, next) => {
 
             let requiredData = results.data.map(
                 el => {
-                    return [el[0],
+                    return [el[0].toString(),
                     el[1],
                     el[2],
                     el[3],
                     el[4],
                     el[5],
-                    el[6],
+                    el[6].toString(),
                     el[7]]
 
                 }
@@ -167,28 +169,28 @@ exports.dataHandler = async (req, res, next) => {
 
             requiredData.pop();
 
+            console.log(requiredData)
+
+
+            // const previousCandels = await tf.findOne({ symbol: query.coinpair })
+
+            // let tempPreviousData = previousCandels.data[previousCandels.data.length - 1]
+
+            // const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
+
+            // if (isSame) {
+            //     requiredData.shift()
+            // }
 
 
 
-            const previousCandels = await tf.findOne({ symbol: query.coinpair })
-
-            let tempPreviousData = previousCandels.data[previousCandels.data.length - 1]
-
-            const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
-
-            if (isSame) {
-                requiredData.shift()
-            }
 
 
 
-
-
-
-            await tf.updateOne(
+            let d = await tf.updateOne(
                 { symbol: query.coinpair },
                 {
-                    $addToSet: {
+                    $push: {
                         data: requiredData
                     }
                 }
@@ -197,7 +199,7 @@ exports.dataHandler = async (req, res, next) => {
 
 
 
-            res.send('success 1')
+            res.send(d)
         } catch (error) {
             console.log(error)
             res.send(error)
