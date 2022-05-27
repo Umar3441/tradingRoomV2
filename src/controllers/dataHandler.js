@@ -172,34 +172,37 @@ exports.dataHandler = async (req, res, next) => {
             console.log(requiredData)
 
 
-            // const previousCandels = await tf.findOne({ symbol: query.coinpair })
+            const previousCandels = await tf.findOne({ symbol: query.coinpair })
 
-            // let tempPreviousData = previousCandels.data[previousCandels.data.length - 1]
+            let tempPreviousData = previousCandels.data[previousCandels.data.length - 1]
 
-            // const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
+            const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
 
-            // if (isSame) {
-            //     requiredData.shift()
-            // }
-
-
+            if (isSame) {
+                requiredData.shift()
+            }
 
 
 
-
-            let d = await tf.updateOne(
-                { symbol: query.coinpair },
-                {
-                    $addToSet: {
-                        data: requiredData
+            for (let index = 0; index < requiredData.length; index++) {
+                const element = requiredData[index];
+                await tf.updateOne(
+                    { symbol: query.coinpair },
+                    {
+                        $push: {
+                            data: element
+                        }
                     }
-                }
-            )
+                )
+            }
 
 
 
 
-            res.send(d)
+
+
+
+            res.send('success')
         } catch (error) {
             console.log(error)
             res.send(error)
