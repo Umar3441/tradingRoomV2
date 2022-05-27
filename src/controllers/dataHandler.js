@@ -190,7 +190,7 @@ exports.dataHandler = async (req, res, next) => {
             let d = await tf.updateOne(
                 { symbol: query.coinpair },
                 {
-                    $push: {
+                    $addToSet: {
                         data: requiredData
                     }
                 }
