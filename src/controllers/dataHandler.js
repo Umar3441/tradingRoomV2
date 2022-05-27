@@ -41,7 +41,7 @@ exports.dataHandler = async (req, res, next) => {
                 data: requiredData
             }
 
-            console.log(finalObject)
+            // console.log(finalObject)
 
             let tf = null
 
@@ -169,7 +169,7 @@ exports.dataHandler = async (req, res, next) => {
 
             requiredData.pop();
 
-            console.log(requiredData)
+            // console.log(requiredData)
 
 
             const previousCandels = await tf.findOne({ symbol: query.coinpair })
