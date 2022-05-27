@@ -15,7 +15,7 @@ const m30_data = require('../models/m30_data')
 var cron = require('node-cron');
 const coins = require('../utils/data')
 
-const server = 3
+const server = 1
 
 let data = coins.usdtCoins.slice(0, 100)
 
@@ -35,7 +35,9 @@ if (server === 1) {
 module.exports = async () => {
 
 
-    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
+    // const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
+
+    const timeframes = ['5m', '3m', '1m']
 
     let crontime = '* * * * * *'
     let call = '1'
@@ -47,11 +49,17 @@ module.exports = async () => {
 
         for (let index = 0; index < data.length; index++) {
             const el = data[index];
+            cp = el
+            cp = cp.slice(cp.length - 3, cp.length)
 
-            try {
-                await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=1&timeframe=${timeframe}&limit=1000`)
-            } catch (error) {
-                console.log(error)
+            if (timeframe === '1m' && cp === 'BTC') {
+
+            } else {
+                try {
+                    await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=1&timeframe=${timeframe}&limit=1000`)
+                } catch (error) {
+                    console.log(error)
+                }
             }
 
         }
