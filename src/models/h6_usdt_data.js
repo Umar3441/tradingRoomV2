@@ -12,4 +12,4 @@ const schema = new mongoose.Schema({
         [String]
     ]
 })
-module.exports = mongoose.model('m3_data', schema, 'm3_data')
+module.exports = mongoose.model('h6_usdt_data', schema, 'h6_usdt_data')

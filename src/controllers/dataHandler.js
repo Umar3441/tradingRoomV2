@@ -1,15 +1,15 @@
 const catchAsync = require('../utils/catchAsync')
 const axios = require('axios')
-const d1_data = require('../models/d1_data')
-const h1_data = require('../models/h1_data')
-const h4_data = require('../models/h4_data')
-const h6_data = require('../models/h6_data')
-const h12_data = require('../models/h12_data')
-const m1_data = require('../models/m1_data')
-const m3_data = require('../models/m3_data')
-const m5_data = require('../models/m5_data')
-const m15_data = require('../models/m15_data')
-const m30_data = require('../models/m30_data')
+const d1_usdt_data = require('../models/d1_usdt_data')
+const h1_usdt_data = require('../models/h1_usdt_data')
+const h4_usdt_data = require('../models/h4_usdt_data')
+const h6_usdt_data = require('../models/h6_usdt_data')
+const h12_usdt_data = require('../models/h12_usdt_data')
+const m1_usdt_data = require('../models/m1_usdt_data')
+const m3_usdt_data = require('../models/m3_usdt_data')
+const m5_usdt_data = require('../models/m5_usdt_data')
+const m15_usdt_data = require('../models/m15_usdt_data')
+const m30_usdt_data = require('../models/m30_usdt_data')
 
 exports.dataHandler = async (req, res, next) => {
     const query = req.query
@@ -46,25 +46,25 @@ exports.dataHandler = async (req, res, next) => {
             let tf = null
 
             if (query.timeframe === '1d') {
-                tf = new d1_data(finalObject)
+                tf = new d1_usdt_data(finalObject)
             } else if (query.timeframe === '1h') {
-                tf = new h1_data(finalObject)
+                tf = new h1_usdt_data(finalObject)
             } else if (query.timeframe === '4h') {
-                tf = new h4_data(finalObject)
+                tf = new h4_usdt_data(finalObject)
             } else if (query.timeframe === '6h') {
-                tf = new h6_data(finalObject)
+                tf = new h6_usdt_data(finalObject)
             } else if (query.timeframe === '12h') {
-                tf = new h12_data(finalObject)
+                tf = new h12_usdt_data(finalObject)
             } else if (query.timeframe === '1m') {
-                tf = new m1_data(finalObject)
+                tf = new m1_usdt_data(finalObject)
             } else if (query.timeframe === '3m') {
-                tf = new m3_data(finalObject)
+                tf = new m3_usdt_data(finalObject)
             } else if (query.timeframe === '5m') {
-                tf = new m5_data(finalObject)
+                tf = new m5_usdt_data(finalObject)
             } else if (query.timeframe === '15m') {
-                tf = new m15_data(finalObject)
+                tf = new m15_usdt_data(finalObject)
             } else if (query.timeframe === '30m') {
-                tf = new m30_data(finalObject)
+                tf = new m30_usdt_data(finalObject)
             }
 
 
@@ -105,25 +105,25 @@ exports.dataHandler = async (req, res, next) => {
             let tf = null
 
             if (query.timeframe === '1d') {
-                tf = d1_data
+                tf = d1_usdt_data
             } else if (query.timeframe === '1h') {
-                tf = h1_data
+                tf = h1_usdt_data
             } else if (query.timeframe === '4h') {
-                tf = h4_data
+                tf = h4_usdt_data
             } else if (query.timeframe === '6h') {
-                tf = h6_data
+                tf = h6_usdt_data
             } else if (query.timeframe === '12h') {
-                tf = h12_data
+                tf = h12_usdt_data
             } else if (query.timeframe === '1m') {
-                tf = m1_data
+                tf = m1_usdt_data
             } else if (query.timeframe === '3m') {
-                tf = m3_data
+                tf = m3_usdt_data
             } else if (query.timeframe === '5m') {
-                tf = m5_data
+                tf = m5_usdt_data
             } else if (query.timeframe === '15m') {
-                tf = m15_data
+                tf = m15_usdt_data
             } else if (query.timeframe === '30m') {
-                tf = m30_data
+                tf = m30_usdt_data
             }
 
 
