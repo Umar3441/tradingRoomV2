@@ -11,7 +11,7 @@ const server = 1
 let data = coins.usdtCoins.slice(0, 100)
 
 if (server === 1) {
-    data = coins.usdtCoins.slice(0, 10)
+    data = coins.usdtCoins.slice(0, 100)
 } else if (server === 2) {
     data = coins.usdtCoins.slice(100, 200)
 } else if (server === 3) {
@@ -28,9 +28,9 @@ if (server === 1) {
 module.exports = async () => {
 
 
-    // const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
+    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
 
-    const timeframes = ['5m', '3m', '1m']
+    // const timeframes = ['5m', '3m', '1m']
 
     let crontime = '* * * * * *'
     let call = '1'
