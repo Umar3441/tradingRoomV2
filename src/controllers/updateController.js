@@ -11,7 +11,7 @@ const server = 1
 let data = coins.usdtCoins.slice(0, 100)
 
 if (server === 1) {
-    data = coins.usdtCoins.slice(0, 100)
+    data = coins.usdtCoins.slice(0, 10)
 } else if (server === 2) {
     data = coins.usdtCoins.slice(100, 200)
 } else if (server === 3) {
