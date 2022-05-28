@@ -6,7 +6,7 @@ const schedule = require('node-schedule');
 var cron = require('node-cron');
 const coins = require('../utils/data')
 
-const server = 4
+const server = 1
 
 let data = coins.usdtCoins.slice(0, 100)
 
@@ -17,7 +17,7 @@ if (server === 1) {
 } else if (server === 3) {
     data = coins.usdtCoins.slice(200, 300)
 } else if (server === 4) {
-    data = coins.usdtCoins.slice(300, 400)
+    data = coins.usdtCoins.slice(300, 405)
 }
 
 

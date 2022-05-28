@@ -67,8 +67,6 @@ exports.dataHandler = async (req, res, next) => {
                 tf = new m30_usdt_data(finalObject)
             }
 
-
-
             await tf.save()
 
             res.send('success')
@@ -97,10 +95,6 @@ exports.dataHandler = async (req, res, next) => {
 
                 }
             )
-
-
-
-
 
             let tf = null
 
