@@ -98,97 +98,62 @@ exports.dataHandler = async (req, res, next) => {
 
             let tf = null
 
-            if (query.timeframe === '1d') {
-                tf = d1_usdt_data
-            } else if (query.timeframe === '1h') {
-                tf = h1_usdt_data
-            } else if (query.timeframe === '4h') {
-                tf = h4_usdt_data
-            } else if (query.timeframe === '6h') {
-                tf = h6_usdt_data
-            } else if (query.timeframe === '12h') {
-                tf = h12_usdt_data
-            } else if (query.timeframe === '1m') {
-                tf = m1_usdt_data
-            } else if (query.timeframe === '3m') {
-                tf = m3_usdt_data
-            } else if (query.timeframe === '5m') {
-                tf = m5_usdt_data
-            } else if (query.timeframe === '15m') {
-                tf = m15_usdt_data
-            } else if (query.timeframe === '30m') {
-                tf = m30_usdt_data
-            }
+            // if (query.timeframe === '1d') {
+            //     tf = d1_usdt_data
+            // } else if (query.timeframe === '1h') {
+            //     tf = h1_usdt_data
+            // } else if (query.timeframe === '4h') {
+            //     tf = h4_usdt_data
+            // } else if (query.timeframe === '6h') {
+            //     tf = h6_usdt_data
+            // } else if (query.timeframe === '12h') {
+            //     tf = h12_usdt_data
+            // } else if (query.timeframe === '1m') {
+            //     tf = m1_usdt_data
+            // } else if (query.timeframe === '3m') {
+            //     tf = m3_usdt_data
+            // } else if (query.timeframe === '5m') {
+            //     tf = m5_usdt_data
+            // } else if (query.timeframe === '15m') {
+            //     tf = m15_usdt_data
+            // } else if (query.timeframe === '30m') {
+            //     tf = m30_usdt_data
+            // }
+
+
+
+
+
 
 
             // requiredData.pop();
 
-            // const latest = requiredData.pop()
             // console.log(requiredData)
-            // console.log("before", requiredData.length)
 
 
+            // const previousCandels = await tf.findOne({ symbol: query.coinpair }, { data: { $slice: -3 } })
 
-            // const previousCandels = await tf.findOne({ symbol: query.coinpair })
+            // let tempPreviousData = previousCandels.data[previousCandels.data.length - 1]
 
-            // let tempPreviousData = previousCandels.data.splice(previousCandels.data.length - 10, previousCandels.data.length)
+            // const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
 
-
-
-
-            // let dm = []
-
-            // let arr3 = requiredData;
-
-
-            // for (let index = 0; index < arr3.length; index++) {
-            //     const element = arr3[index];
-
-            //     for (let ind = 0; ind < tempPreviousData.length; ind++) {
-            //         const element1 = tempPreviousData[ind];
-
-            //         if (element.closeTime * 1 === element1.closeTime * 1) {
-            //             // dm.push(element)
-            //             requiredData = requiredData.filter(el => el.closeTime * 1 !== element1.closeTime * 1);
-            //         }
-            //     }
+            // if (isSame) {
+            //     requiredData.shift()
             // }
 
-            // requiredData.push(latest);
-
-            // console.log('--->', requiredData.length)
 
 
-
-
-            requiredData.pop();
-
-            // console.log(requiredData)
-
-
-            const previousCandels = await tf.findOne({ symbol: query.coinpair })
-
-            let tempPreviousData = previousCandels.data[previousCandels.data.length - 1]
-
-            const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
-
-            if (isSame) {
-                requiredData.shift()
-            }
-
-
-
-            for (let index = 0; index < requiredData.length; index++) {
-                const element = requiredData[index];
-                await tf.updateOne(
-                    { symbol: query.coinpair },
-                    {
-                        $push: {
-                            data: element
-                        }
-                    }
-                )
-            }
+            // for (let index = 0; index < requiredData.length; index++) {
+            //     const element = requiredData[index];
+            //     await tf.updateOne(
+            //         { symbol: query.coinpair },
+            //         {
+            //             $push: {
+            //                 data: element
+            //             }
+            //         }
+            //     )
+            // }
 
 
 
