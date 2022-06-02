@@ -143,17 +143,21 @@ exports.dataHandler = async (req, res, next) => {
 
 
 
-            // for (let index = 0; index < requiredData.length; index++) {
-            //     const element = requiredData[index];
-            //     await tf.updateOne(
-            //         { symbol: query.coinpair },
-            //         {
-            //             $push: {
-            //                 data: element
-            //             }
-            //         }
-            //     )
-            // }
+            requiredData.forEach(async element => {
+                try {
+                    await tf.updateOne(
+                        { symbol: query.coinpair },
+                        {
+                            $push: {
+                                data: element
+                            }
+                        }
+                    )
+                } catch (error) {
+                    console.log(error)
+                }
+
+            })
 
 
 

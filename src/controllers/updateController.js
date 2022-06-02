@@ -39,9 +39,9 @@ console.log(data)
 module.exports = async () => {
 
 
-    // const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
+    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
 
-    const timeframes = ['1m',]
+    // const timeframes = ['1m',]
 
     let crontime = '* * * * * *'
 
@@ -49,17 +49,17 @@ module.exports = async () => {
     for (let ind = 0; ind < timeframes.length; ind++) {
         const timeframe = timeframes[ind]
 
-        // for (let index = 0; index < data.length; index++) {
-        //     const el = data[index];
+        for (let index = 0; index < data.length; index++) {
+            const el = data[index];
 
-        //     try {
-        //         await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=1&timeframe=${timeframe}&limit=1000`)
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
+            try {
+                await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=1&timeframe=${timeframe}&limit=1000`)
+            } catch (error) {
+                console.log(error)
+            }
 
 
-        // }
+        }
 
 
 
@@ -93,13 +93,35 @@ module.exports = async () => {
             // for (let index = 0; index < data.length; index++) {
             // const el = data[index];
             let d = []
+            let tf = null
+
+            if (timeframe === '1d') {
+                tf = d1_usdt_data
+            } else if (timeframe === '1h') {
+                tf = h1_usdt_data
+            } else if (timeframe === '4h') {
+                tf = h4_usdt_data
+            } else if (timeframe === '6h') {
+                tf = h6_usdt_data
+            } else if (timeframe === '12h') {
+                tf = h12_usdt_data
+            } else if (timeframe === '1m') {
+                tf = m1_usdt_data
+            } else if (timeframe === '3m') {
+                tf = m3_usdt_data
+            } else if (timeframe === '5m') {
+                tf = m5_usdt_data
+            } else if (timeframe === '15m') {
+                tf = m15_usdt_data
+            } else if (timeframe === '30m') {
+                tf = m30_usdt_data
+            }
+
             data.forEach(async (el, index) => {
                 try {
-                    // await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=2&timeframe=${timeframe}&limit=3`)
+
                     console.log(el)
-                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=2`)
-
-
+                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=3`)
                     let requiredData = results.data.map(
                         el => {
                             return [el[0].toString(),
@@ -113,8 +135,22 @@ module.exports = async () => {
 
                         }
                     )
-
                     requiredData.pop();
+
+
+
+                    const previousCandels = await tf.findOne({ symbol: el }, { data: { $slice: -1 } })
+
+                    let tempPreviousData = previousCandels.data[0]
+
+                    const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
+
+                    if (isSame) {
+                        requiredData.shift()
+                    }
+
+
+
 
                     d.push({
                         symbol: el,
@@ -133,7 +169,7 @@ module.exports = async () => {
                             for (let index = 0; index < requiredData1.length; index++) {
                                 const elem = requiredData[index];
                                 console.log(elem)
-                                await m1_usdt_data.updateOne(
+                                await tf.updateOne(
                                     { symbol: element.symbol },
                                     {
                                         $push: {
