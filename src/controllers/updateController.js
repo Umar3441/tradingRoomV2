@@ -37,9 +37,9 @@ if (server === 1) {
 console.log(data)
 
 module.exports = async () => {
-    // const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
+    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
 
-    const timeframes = ['5m', '3m', '1m']
+    // const timeframes = ['5m', '3m', '1m']
     let crontime = '* * * * * *'
     for (let ind = 0; ind < timeframes.length; ind++) {
         const timeframe = timeframes[ind]
@@ -60,7 +60,7 @@ module.exports = async () => {
 
 
         if (timeframe === '1m') {
-            crontime = '20 */1 * * * *'
+            crontime = '5 */1 * * * *'
         } else if (timeframe === '3m') {
             crontime = '6 */3 * * * *'
         } else if (timeframe === '5m') {
