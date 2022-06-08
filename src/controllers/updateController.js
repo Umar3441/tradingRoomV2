@@ -28,7 +28,7 @@ if (server === 1) {
 } else if (server === 3) {
     data = coins.usdtCoins.slice(200, 300)
 } else if (server === 4) {
-    data = coins.usdtCoins.slice(300, 405)
+    data = coins.usdtCoins.slice(300, 400)
 }
 
 
@@ -37,15 +37,10 @@ if (server === 1) {
 console.log(data)
 
 module.exports = async () => {
+    // const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
 
-
-    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
-
-    // const timeframes = ['1m',]
-
+    const timeframes = ['5m', '3m', '1m']
     let crontime = '* * * * * *'
-
-
     for (let ind = 0; ind < timeframes.length; ind++) {
         const timeframe = timeframes[ind]
 
@@ -65,7 +60,7 @@ module.exports = async () => {
 
 
         if (timeframe === '1m') {
-            crontime = '1 */1 * * * *'
+            crontime = '20 */1 * * * *'
         } else if (timeframe === '3m') {
             crontime = '6 */3 * * * *'
         } else if (timeframe === '5m') {
@@ -121,7 +116,7 @@ module.exports = async () => {
                 try {
 
                     console.log(el)
-                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=3`)
+                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=2`)
                     let requiredData = results.data.map(
                         el => {
                             return [el[0].toString(),
@@ -139,47 +134,29 @@ module.exports = async () => {
 
 
 
-                    const previousCandels = await tf.findOne({ symbol: el }, { data: { $slice: -1 } })
-
-                    let tempPreviousData = previousCandels.data[0]
-
-                    const isSame = requiredData[0][6] * 1 === tempPreviousData[6] * 1
-
-                    if (isSame) {
-                        requiredData.shift()
-                    }
-
-
-
-
                     d.push({
                         symbol: el,
                         data: requiredData
                     }
                     )
-                    console.log(d.length)
-
                     if (d.length > 99) {
-                        d.forEach(async (element, index) => {
-
-                            console.log(element.symbol, " : ", index)
-
-                            let requiredData1 = element.data
-
-                            for (let index = 0; index < requiredData1.length; index++) {
-                                const elem = requiredData[index];
-                                console.log(elem)
+                        d.forEach(async element => {
+                            try {
                                 await tf.updateOne(
                                     { symbol: element.symbol },
                                     {
                                         $push: {
-                                            data: elem
+                                            data: element.data[0]
                                         }
                                     }
                                 )
+                            } catch (error) {
+                                console.log(error)
                             }
                         });
                     }
+
+
 
                 } catch (error) {
                     console.log(error)
