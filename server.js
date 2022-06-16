@@ -56,6 +56,9 @@ app.all('*', (req, res, next) => {
     next(new AppError(`Requested url ${req.originalUrl}`, 404))
 })
 
+app.get('/', (req, res) => {
+    res.send('response')
+})
 
 app.use(errorHandler)
 
