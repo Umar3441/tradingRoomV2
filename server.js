@@ -49,16 +49,16 @@ app.use('/api/trading-room-v2/data', dataRouter)
 
 
 
-
+app.get('/', (req, res) => {
+    res.send('response')
+})
 
 app.all('*', (req, res, next) => {
     const err = new AppError(`Requested url ${req.originalUrl}`, 404)
     next(new AppError(`Requested url ${req.originalUrl}`, 404))
 })
 
-app.get('/', (req, res) => {
-    res.send('response')
-})
+
 
 app.use(errorHandler)
 
