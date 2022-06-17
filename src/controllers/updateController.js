@@ -135,7 +135,7 @@ module.exports = async () => {
                     requiredData.pop();
 
                     console.log('--->', el)
-                    let previousData = await m3_usdt_data.findOne({ symbol: el }, { data: { $slice: -4 } })
+                    let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 } })
 
                     let previousCandels = previousData.data;
                     let newCandels = requiredData
