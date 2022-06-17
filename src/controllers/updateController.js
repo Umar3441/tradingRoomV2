@@ -37,9 +37,9 @@ if (server === 1) {
 console.log(data)
 
 module.exports = async () => {
-    // const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m', '1m']
+    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m']
 
-    const timeframes = ['15m', '5m', '3m']
+    // const timeframes = ['3m']
     let crontime = '* * * * * *'
     for (let ind = 0; ind < timeframes.length; ind++) {
         const timeframe = timeframes[ind]
@@ -117,8 +117,8 @@ module.exports = async () => {
             data.forEach(async (el, index) => {
                 try {
 
-                    console.log(el)
-                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=2`)
+
+                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=5`)
                     let requiredData = results.data.map(
                         el => {
                             return [el[0].toString(),
@@ -134,24 +134,64 @@ module.exports = async () => {
                     )
                     requiredData.pop();
 
+                    console.log('--->', el)
+                    let previousData = await m3_usdt_data.findOne({ symbol: el }, { data: { $slice: -4 } })
+
+                    let previousCandels = previousData.data;
+                    let newCandels = requiredData
+
+                    console.log('previos,', previousCandels.length)
+                    console.log('new,', newCandels.length)
+
+                    let newCandelsReal = []
+
+                    let isPresent = false
+
+                    for (let index = 0; index < newCandels.length; index++) {
+                        const element = newCandels[index];
+                        isPresent = false
+
+
+                        for (let ind = 0; ind < previousCandels.length; ind++) {
+                            const el = previousCandels[ind];
+                            if (element[6] * 1 === el[6] * 1) {
+                                isPresent = true;
+                                break;
+                            }
+
+                        }
+
+                        if (isPresent === false) {
+                            newCandelsReal.push(element);
+                        }
+
+
+                    }
+
+                    console.log('real', newCandelsReal.length);
+
 
 
                     d.push({
                         symbol: el,
-                        data: requiredData
+                        data: newCandelsReal
                     }
                     )
                     if (d.length > 99) {
                         d.forEach(async element => {
                             try {
-                                await tf.updateOne(
-                                    { symbol: element.symbol },
-                                    {
-                                        $push: {
-                                            data: element.data[0]
+
+                                element.data.forEach(async el => {
+
+                                    await tf.updateOne(
+                                        { symbol: element.symbol },
+                                        {
+                                            $push: {
+                                                data: el
+                                            }
                                         }
-                                    }
-                                )
+                                    )
+                                });
                             } catch (error) {
                                 console.log(error)
                             }
