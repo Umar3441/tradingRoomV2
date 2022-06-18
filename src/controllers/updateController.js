@@ -118,7 +118,7 @@ module.exports = async () => {
                 try {
 
 
-                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=3`)
+                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=2`)
                     let requiredData = results.data.map(
                         el => {
                             return [el[0].toString(),
@@ -134,47 +134,47 @@ module.exports = async () => {
                     )
                     requiredData.pop();
 
-                    console.log('--->', el)
-                    let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -2 } })
+                    // console.log('--->', el)
+                    // let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -2 } })
 
-                    let previousCandels = previousData.data;
-                    let newCandels = requiredData
+                    // let previousCandels = previousData.data;
+                    // let newCandels = requiredData
 
-                    console.log('previos,', previousCandels.length)
-                    console.log('new,', newCandels.length)
+                    // console.log('previos,', previousCandels.length)
+                    // console.log('new,', newCandels.length)
 
-                    let newCandelsReal = []
+                    // let newCandelsReal = []
 
-                    let isPresent = false
+                    // let isPresent = false
 
-                    for (let index = 0; index < newCandels.length; index++) {
-                        const element = newCandels[index];
-                        isPresent = false
-
-
-                        for (let ind = 0; ind < previousCandels.length; ind++) {
-                            const el = previousCandels[ind];
-                            if (element[6] * 1 === el[6] * 1) {
-                                isPresent = true;
-                                break;
-                            }
-
-                        }
-
-                        if (isPresent === false) {
-                            newCandelsReal.push(element);
-                        }
+                    // for (let index = 0; index < newCandels.length; index++) {
+                    //     const element = newCandels[index];
+                    //     isPresent = false
 
 
-                    }
+                    //     for (let ind = 0; ind < previousCandels.length; ind++) {
+                    //         const el = previousCandels[ind];
+                    //         if (element[6] * 1 === el[6] * 1) {
+                    //             isPresent = true;
+                    //             break;
+                    //         }
 
-                    console.log('real', newCandelsReal.length);
+                    //     }
+
+                    //     if (isPresent === false) {
+                    //         newCandelsReal.push(element);
+                    //     }
+
+
+                    // }
+
+                    // console.log('real', newCandelsReal.length);
 
 
 
                     d.push({
                         symbol: el,
-                        data: newCandelsReal
+                        data: requiredData
                     }
                     )
                     if (d.length > 99) {
@@ -182,17 +182,17 @@ module.exports = async () => {
                             // console.log(element.data[0])
                             try {
 
-                                element.data.forEach(async el => {
+                                // element.data.forEach(async el => {
 
-                                    await tf.updateOne(
-                                        { symbol: element.symbol },
-                                        {
-                                            $push: {
-                                                data: el
-                                            }
+                                await tf.updateOne(
+                                    { symbol: element.symbol },
+                                    {
+                                        $push: {
+                                            data: element.data[0]
                                         }
-                                    )
-                                });
+                                    }
+                                )
+                                // });
                             } catch (error) {
                                 console.log(error)
                             }
