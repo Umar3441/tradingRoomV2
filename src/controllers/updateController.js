@@ -134,7 +134,7 @@ module.exports = async () => {
                     )
                     requiredData.pop();
 
-                    // console.log('--->', el)
+                    console.log('--->', el)
                     // let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -2 } })
 
                     // let previousCandels = previousData.data;
