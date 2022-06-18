@@ -118,7 +118,7 @@ module.exports = async () => {
                 try {
 
 
-                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=5`)
+                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=2`)
                     let requiredData = results.data.map(
                         el => {
                             return [el[0].toString(),
@@ -134,7 +134,7 @@ module.exports = async () => {
                     )
                     requiredData.pop();
 
-                    // console.log('--->', el)
+                    console.log('--->', el)
                     // let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 } })
 
                     // let previousCandels = previousData.data;
@@ -179,19 +179,20 @@ module.exports = async () => {
                     )
                     if (d.length > 99) {
                         d.forEach(async element => {
+                            // console.log(element.data[0])
                             try {
 
-                                element.data.forEach(async el => {
+                                // element.data.forEach(async el => {
 
-                                    await tf.updateOne(
-                                        { symbol: element.symbol },
-                                        {
-                                            $push: {
-                                                data: el
-                                            }
+                                await tf.updateOne(
+                                    { symbol: element.symbol },
+                                    {
+                                        $push: {
+                                            data: element.data[0]
                                         }
-                                    )
-                                });
+                                    }
+                                )
+                                // });
                             } catch (error) {
                                 console.log(error)
                             }
