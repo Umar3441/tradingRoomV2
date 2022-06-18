@@ -134,47 +134,47 @@ module.exports = async () => {
                     )
                     requiredData.pop();
 
-                    console.log('--->', el)
-                    let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 } })
+                    // console.log('--->', el)
+                    // let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 } })
 
-                    let previousCandels = previousData.data;
-                    let newCandels = requiredData
+                    // let previousCandels = previousData.data;
+                    // let newCandels = requiredData
 
-                    console.log('previos,', previousCandels.length)
-                    console.log('new,', newCandels.length)
+                    // console.log('previos,', previousCandels.length)
+                    // console.log('new,', newCandels.length)
 
-                    let newCandelsReal = []
+                    // let newCandelsReal = []
 
-                    let isPresent = false
+                    // let isPresent = false
 
-                    for (let index = 0; index < newCandels.length; index++) {
-                        const element = newCandels[index];
-                        isPresent = false
-
-
-                        for (let ind = 0; ind < previousCandels.length; ind++) {
-                            const el = previousCandels[ind];
-                            if (element[6] * 1 === el[6] * 1) {
-                                isPresent = true;
-                                break;
-                            }
-
-                        }
-
-                        if (isPresent === false) {
-                            newCandelsReal.push(element);
-                        }
+                    // for (let index = 0; index < newCandels.length; index++) {
+                    //     const element = newCandels[index];
+                    //     isPresent = false
 
 
-                    }
+                    //     for (let ind = 0; ind < previousCandels.length; ind++) {
+                    //         const el = previousCandels[ind];
+                    //         if (element[6] * 1 === el[6] * 1) {
+                    //             isPresent = true;
+                    //             break;
+                    //         }
 
-                    console.log('real', newCandelsReal.length);
+                    //     }
+
+                    //     if (isPresent === false) {
+                    //         newCandelsReal.push(element);
+                    //     }
+
+
+                    // }
+
+                    // console.log('real', newCandelsReal.length);
 
 
 
                     d.push({
                         symbol: el,
-                        data: newCandelsReal
+                        data: requiredData
                     }
                     )
                     if (d.length > 99) {
