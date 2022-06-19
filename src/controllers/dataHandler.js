@@ -11,11 +11,11 @@ const m5_usdt_data = require('../models/m5_usdt_data')
 const m15_usdt_data = require('../models/m15_usdt_data')
 const m30_usdt_data = require('../models/m30_usdt_data')
 
+
+
 exports.dataHandler = async (req, res, next) => {
     const query = req.query
     console.log(query.coinpair)
-
-
     if (query.call === '1') {
         try {
             const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${query.coinpair}&interval=${query.timeframe}&limit=${query.limit * 1}`)

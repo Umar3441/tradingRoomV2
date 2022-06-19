@@ -8,6 +8,7 @@ const dataRouter = require('./src/routes/data_router')
 const errorHandler = require('./src/controllers/errorController')
 const AppError = require('./src/utils/appError')
 const updateController = require('./src/controllers/updateController')
+const usdt_coins = require('./src/models/usdt_coins')
 
 
 
@@ -33,8 +34,11 @@ const url = process.env.mongo_link;
 
 const connection = mongoose.connect(process.env.mongo_link, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     async () => {
-        console.log('connected to database')
-        updateController()
+        console.log('connected to database');
+
+
+
+        updateController();
 
     }
 ).catch(
