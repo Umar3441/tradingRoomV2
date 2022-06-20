@@ -10,6 +10,7 @@ const schema = new mongoose.Schema({
     },
     data: [
         [String]
-    ]
-})
+    ],
+
+}, { timestamps: true })
 module.exports = mongoose.model('m3_usdt_data', schema, 'm3_usdt_data')
