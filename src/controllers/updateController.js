@@ -249,7 +249,7 @@ module.exports = async () => {
                 try {
 
 
-                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=3`)
+                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=5`)
                     let requiredData = results.data.map(
                         el => {
                             return [el[0].toString(),
@@ -266,7 +266,7 @@ module.exports = async () => {
                     requiredData.pop();
 
                     console.log('--->', el)
-                    let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -2 } })
+                    let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 } })
 
                     let previousCandels = previousData.data;
                     let newCandels = requiredData
