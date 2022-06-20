@@ -215,132 +215,132 @@ module.exports = async () => {
 
 
 
-        // cron.schedule(crontime, catchAsync(async () => {
-        //     // for (let index = 0; index < data.length; index++) {
-        //     // const el = data[index];
-        //     let d = []
-        //     let tf = null
+        cron.schedule(crontime, catchAsync(async () => {
+            // for (let index = 0; index < data.length; index++) {
+            // const el = data[index];
+            let d = []
+            let tf = null
 
-        //     if (timeframe === '1d') {
-        //         tf = d1_usdt_data
-        //     } else if (timeframe === '1h') {
-        //         tf = h1_usdt_data
-        //     } else if (timeframe === '4h') {
-        //         tf = h4_usdt_data
-        //     } else if (timeframe === '6h') {
-        //         tf = h6_usdt_data
-        //     } else if (timeframe === '12h') {
-        //         tf = h12_usdt_data
-        //     } else if (timeframe === '1m') {
-        //         tf = m1_usdt_data
-        //     } else if (timeframe === '3m') {
-        //         tf = m3_usdt_data
-        //     } else if (timeframe === '5m') {
-        //         tf = m5_usdt_data
-        //     } else if (timeframe === '15m') {
-        //         tf = m15_usdt_data
-        //     } else if (timeframe === '30m') {
-        //         tf = m30_usdt_data
-        //     }
-
-
-
-        //     data.forEach(async (el, index) => {
-        //         try {
-
-
-        //             const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=5`)
-        //             let requiredData = results.data.map(
-        //                 el => {
-        //                     return [el[0].toString(),
-        //                     el[1],
-        //                     el[2],
-        //                     el[3],
-        //                     el[4],
-        //                     el[5],
-        //                     el[6].toString(),
-        //                     el[7]]
-
-        //                 }
-        //             )
-        //             requiredData.pop();
-
-        //             console.log('--->', el)
-        //             let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 } })
-
-        //             let previousCandels = previousData.data;
-        //             let newCandels = requiredData
-
-        //             console.log('previos,', previousCandels.length)
-        //             console.log('new,', newCandels.length)
-
-        //             let newCandelsReal = []
-
-        //             let isPresent = false
-
-        //             for (let index = 0; index < newCandels.length; index++) {
-        //                 const element = newCandels[index];
-        //                 isPresent = false
-
-
-        //                 for (let ind = 0; ind < previousCandels.length; ind++) {
-        //                     const el = previousCandels[ind];
-        //                     if (element[6] * 1 === el[6] * 1) {
-        //                         isPresent = true;
-        //                         break;
-        //                     }
-
-        //                 }
-
-        //                 if (isPresent === false) {
-        //                     newCandelsReal.push(element);
-        //                 }
-
-
-        //             }
-
-        //             console.log('real', newCandelsReal.length);
+            if (timeframe === '1d') {
+                tf = d1_usdt_data
+            } else if (timeframe === '1h') {
+                tf = h1_usdt_data
+            } else if (timeframe === '4h') {
+                tf = h4_usdt_data
+            } else if (timeframe === '6h') {
+                tf = h6_usdt_data
+            } else if (timeframe === '12h') {
+                tf = h12_usdt_data
+            } else if (timeframe === '1m') {
+                tf = m1_usdt_data
+            } else if (timeframe === '3m') {
+                tf = m3_usdt_data
+            } else if (timeframe === '5m') {
+                tf = m5_usdt_data
+            } else if (timeframe === '15m') {
+                tf = m15_usdt_data
+            } else if (timeframe === '30m') {
+                tf = m30_usdt_data
+            }
 
 
 
-        //             d.push({
-        //                 symbol: el,
-        //                 data: newCandelsReal
-        //             }
-        //             )
-        //             console.log(data.length - 1)
-        //             if (d.length > data.length - 1) {
-        //                 d.forEach(async element => {
-        //                     console.log(element.data[0])
-        //                     try {
-
-        //                         element.data.forEach(async el => {
-
-        //                             await tf.updateOne(
-        //                                 { symbol: element.symbol },
-        //                                 {
-        //                                     $push: {
-        //                                         data: el
-        //                                     }
-        //                                 }
-        //                             )
-        //                         });
-        //                     } catch (error) {
-        //                         console.log(error)
-        //                     }
-        //                 });
-        //             }
+            data.forEach(async (el, index) => {
+                try {
 
 
+                    const results = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${el}&interval=${timeframe}&limit=5`)
+                    let requiredData = results.data.map(
+                        el => {
+                            return [el[0].toString(),
+                            el[1],
+                            el[2],
+                            el[3],
+                            el[4],
+                            el[5],
+                            el[6].toString(),
+                            el[7]]
 
-        //         } catch (error) {
-        //             console.log(error)
-        //         }
-        //     });
+                        }
+                    )
+                    requiredData.pop();
+
+                    console.log('--->', el)
+                    let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 } })
+
+                    let previousCandels = previousData.data;
+                    let newCandels = requiredData
+
+                    console.log('previos,', previousCandels.length)
+                    console.log('new,', newCandels.length)
+
+                    let newCandelsReal = []
+
+                    let isPresent = false
+
+                    for (let index = 0; index < newCandels.length; index++) {
+                        const element = newCandels[index];
+                        isPresent = false
 
 
-        //     // }
-        // }));
+                        for (let ind = 0; ind < previousCandels.length; ind++) {
+                            const el = previousCandels[ind];
+                            if (element[6] * 1 === el[6] * 1) {
+                                isPresent = true;
+                                break;
+                            }
+
+                        }
+
+                        if (isPresent === false) {
+                            newCandelsReal.push(element);
+                        }
+
+
+                    }
+
+                    console.log('real', newCandelsReal.length);
+
+
+
+                    d.push({
+                        symbol: el,
+                        data: newCandelsReal
+                    }
+                    )
+                    console.log(data.length - 1)
+                    if (d.length > data.length - 1) {
+                        d.forEach(async element => {
+                            console.log(element.data[0])
+                            try {
+
+                                element.data.forEach(async el => {
+
+                                    await tf.updateOne(
+                                        { symbol: element.symbol },
+                                        {
+                                            $push: {
+                                                data: el
+                                            }
+                                        }
+                                    )
+                                });
+                            } catch (error) {
+                                console.log(error)
+                            }
+                        });
+                    }
+
+
+
+                } catch (error) {
+                    console.log(error)
+                }
+            });
+
+
+            // }
+        }));
 
 
 
