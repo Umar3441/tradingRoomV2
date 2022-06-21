@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const axios = require('axios');
 const schedule = require('node-schedule');
+const moment = require('moment')
 
 const d1_usdt_data = require('../models/d1_usdt_data')
 const h1_usdt_data = require('../models/h1_usdt_data')
@@ -17,22 +18,22 @@ const usdt_coins = require('../models/usdt_coins')
 var cron = require('node-cron');
 const coins = require('../utils/data')
 
-// const server = 4
+const server = 1
 
-// let data = coins.usdtCoins.slice(0, 100)
+let data = coins.usdtCoins.slice(0, 100)
 
 
-// if (server === 1) {
-//     data = coins.usdtCoins.slice(0, 2)
-// } else if (server === 2) {
-//     data = coins.usdtCoins.slice(100, 200)
-// } else if (server === 3) {
-//     data = coins.usdtCoins.slice(200, 300)
-// } else if (server === 4) {
-//     data = coins.usdtCoins.slice(300, 400)
-// }
+if (server === 1) {
+    data = coins.usdtCoins.slice(0, 2)
+} else if (server === 2) {
+    data = coins.usdtCoins.slice(100, 200)
+} else if (server === 3) {
+    data = coins.usdtCoins.slice(200, 300)
+} else if (server === 4) {
+    data = coins.usdtCoins.slice(300, 400)
+}
 
-// console.log(data)
+console.log(data)
 
 
 
@@ -42,12 +43,12 @@ module.exports = async () => {
 
 
 
-    let data = await usdt_coins.find({})
-    data = data.map(el => el.symbol)
+    // let data = await usdt_coins.find({})
+    // data = data.map(el => el.symbol)
 
-    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m']
+    // const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m']
 
-    // const timeframes = ['3m']
+    const timeframes = ['15m', '5m', '3m']
 
     usdt_coins.watch().
         on('change', async (change) => {
@@ -175,7 +176,7 @@ module.exports = async () => {
                 if (exists?._id) {
                     console.log('exists', el)
                 } else {
-                    await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=1&timeframe=${timeframe}&limit=1000`)
+                    await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${el}&call=1&timeframe=${timeframe}&endTime=${endTime}&limit=1000`)
                 }
 
 

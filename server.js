@@ -4,6 +4,7 @@ var cors = require('cors')
 require('dotenv').config()
 const mongoose = require('mongoose')
 const dataRouter = require('./src/routes/data_router')
+const moment = require('moment')
 
 const errorHandler = require('./src/controllers/errorController')
 const AppError = require('./src/utils/appError')
@@ -36,9 +37,9 @@ const connection = mongoose.connect(process.env.mongo_link, { useNewUrlParser: t
     async () => {
         console.log('connected to database');
 
+        console.log(`${moment().unix()}000000`)
 
-
-        updateController();
+        // updateController();
 
     }
 ).catch(
