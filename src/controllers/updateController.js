@@ -18,22 +18,22 @@ const usdt_coins = require('../models/usdt_coins')
 var cron = require('node-cron');
 const coins = require('../utils/data')
 
-const server = 1
+// const server = 1
 
-let data = coins.usdtCoins.slice(0, 100)
+// let data = coins.usdtCoins.slice(0, 100)
 
 
-if (server === 1) {
-    data = coins.usdtCoins.slice(0, 2)
-} else if (server === 2) {
-    data = coins.usdtCoins.slice(100, 200)
-} else if (server === 3) {
-    data = coins.usdtCoins.slice(200, 300)
-} else if (server === 4) {
-    data = coins.usdtCoins.slice(300, 400)
-}
+// if (server === 1) {
+//     data = coins.usdtCoins.slice(0, 2)
+// } else if (server === 2) {
+//     data = coins.usdtCoins.slice(100, 200)
+// } else if (server === 3) {
+//     data = coins.usdtCoins.slice(200, 300)
+// } else if (server === 4) {
+//     data = coins.usdtCoins.slice(300, 400)
+// }
 
-console.log(data)
+// console.log(data)
 
 
 
@@ -43,20 +43,22 @@ module.exports = async () => {
 
 
 
-    // let data = await usdt_coins.find({})
-    // data = data.map(el => el.symbol)
+    let data = await usdt_coins.find({})
+    data = data.map(el => el.symbol)
 
-    // const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m']
+    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m']
 
-    const timeframes = ['15m', '5m', '3m']
+    // const timeframes = ['15m', '5m', '3m']
 
     usdt_coins.watch().
         on('change', async (change) => {
 
             if (change.operationType === 'update') {
 
-                for (let ind = 0; ind < timeframes.length; ind++) {
-                    const timeframe = timeframes[ind]
+                let deletedCoinPair = await usdt_coins.findByIdAndDelete(change.documentKey._id.toString())
+
+                timeframes.forEach(async timeframe => {
+
                     console.log(timeframe)
                     let tf = null
 
@@ -85,11 +87,11 @@ module.exports = async () => {
 
 
 
-                    let deletedCoinPair = await usdt_coins.findByIdAndDelete(change.documentKey._id.toString())
-                    let tempData = await usdt_coins.find({})
-                    data = tempData.map(el => el.symbol)
+                    // let deletedCoinPair = await usdt_coins.findByIdAndDelete(change.documentKey._id.toString())
+                    // let tempData = await usdt_coins.find({})
+                    // data = tempData.map(el => el.symbol)
 
-                    console.log(data)
+                    // console.log(data)
 
 
                     try {
@@ -100,20 +102,31 @@ module.exports = async () => {
                     } catch (error) {
                         console.log(error)
                     }
+                });
 
-                }
+                await usdt_coins.findByIdAndDelete(change.documentKey._id.toString())
+                let tempData = await usdt_coins.find({})
+                data = tempData.map(el => el.symbol)
+
+                console.log(data)
+
 
             }
+
 
 
             if (change.operationType === 'insert') {
 
                 let coinPair = change.fullDocument.symbol
 
+                console.log('coin Pair added', coinPair)
 
-                for (let ind = 0; ind < timeframes.length; ind++) {
-                    const timeframe = timeframes[ind]
 
+
+
+
+
+                timeframes.forEach(async timeframe => {
 
                     try {
                         await axios.post(`${process.env.base_link}/api/trading-room-v2/data?coinpair=${coinPair}&call=1&timeframe=${timeframe}&limit=1000`)
@@ -121,7 +134,7 @@ module.exports = async () => {
                         console.log(error)
                     }
 
-                }
+                });
                 data.push(coinPair)
             }
 
@@ -131,12 +144,12 @@ module.exports = async () => {
 
 
     let crontime = '* * * * * *'
-    let endTime = `${moment().unix()}000000`
+    let endTime = `${moment().subtract(1, 'minutes').unix()}000000`
 
     for (let ind = 0; ind < timeframes.length; ind++) {
         const timeframe = timeframes[ind]
 
-        endTime = `${moment().unix()}000000`
+        endTime = `${moment().subtract(1, 'minutes').unix()}000000`
 
         for (let index = 0; index < data.length; index++) {
             const el = data[index];

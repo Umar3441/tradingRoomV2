@@ -5,8 +5,13 @@ const schema = new mongoose.Schema(
         symbol: {
             type: String,
             required: true,
-            // unique: true
+            unique: true,
 
+
+        },
+        expired: {
+            type: Boolean,
+            default: false
         }
     }
 )
