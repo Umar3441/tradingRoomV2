@@ -22,6 +22,7 @@ exports.dataHandler = async (req, res, next) => {
             let url = query.endTime ? `https://api.binance.com/api/v3/klines?symbol=${query.coinpair}&interval=${query.timeframe}&endTime=${query.endTime * 1}&limit=${query.limit * 1}`
                 : `https://api.binance.com/api/v3/klines?symbol=${query.coinpair}&interval=${query.timeframe}&limit=${query.limit * 1}`
 
+            console.log(url)
             const results = await axios.get(url)
             const requiredData = results.data.map(
                 el => {
@@ -45,7 +46,7 @@ exports.dataHandler = async (req, res, next) => {
                 data: requiredData
             }
 
-            // console.log(finalObject)
+            console.log(finalObject)
 
             let tf = null
 
@@ -71,7 +72,7 @@ exports.dataHandler = async (req, res, next) => {
                 tf = new m30_usdt_data(finalObject)
             }
 
-            await tf.save()
+            // await tf.save()
 
             res.send('success')
         } catch (error) {

@@ -37,9 +37,9 @@ const connection = mongoose.connect(process.env.mongo_link, { useNewUrlParser: t
     async () => {
         console.log('connected to database');
 
-        // console.log(`${moment().unix()}000000`)
+        console.log(`${moment().subtract(12, 'minutes').unix()}999`)
 
-        updateController();
+        // updateController();
 
     }
 ).catch(
