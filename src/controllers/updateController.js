@@ -144,12 +144,12 @@ module.exports = async () => {
 
 
     let crontime = '* * * * * *'
-    let endTime = `${moment().subtract(1, 'minutes').unix()}000000`
+    let endTime = `${moment().subtract(1, 'minutes').unix()}999`
 
     for (let ind = 0; ind < timeframes.length; ind++) {
         const timeframe = timeframes[ind]
 
-        endTime = `${moment().subtract(1, 'minutes').unix()}000000`
+        endTime = `${moment().subtract(1, 'minutes').unix()}999`
 
         for (let index = 0; index < data.length; index++) {
             const el = data[index];

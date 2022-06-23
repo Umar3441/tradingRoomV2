@@ -72,7 +72,7 @@ exports.dataHandler = async (req, res, next) => {
                 tf = new m30_usdt_data(finalObject)
             }
 
-            // await tf.save()
+            await tf.save()
 
             res.send('success')
         } catch (error) {
