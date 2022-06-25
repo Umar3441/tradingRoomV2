@@ -39,7 +39,7 @@ const connection = mongoose.connect(process.env.mongo_link, { useNewUrlParser: t
 
         console.log(`${moment().subtract(12, 'minutes').unix()}999`)
 
-        updateController();
+        // updateController();
 
     }
 ).catch(
