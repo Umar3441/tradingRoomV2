@@ -18,22 +18,22 @@ const usdt_coins = require('../models/usdt_coins')
 var cron = require('node-cron');
 const coins = require('../utils/data')
 
-// const server = 1
+const server = 1
 
-// let data = coins.usdtCoins.slice(0, 100)
+let data = coins.usdtCoins.slice(0, 100)
 
 
-// if (server === 1) {
-//     data = coins.usdtCoins.slice(0, 2)
-// } else if (server === 2) {
-//     data = coins.usdtCoins.slice(100, 200)
-// } else if (server === 3) {
-//     data = coins.usdtCoins.slice(200, 300)
-// } else if (server === 4) {
-//     data = coins.usdtCoins.slice(300, 400)
-// }
+if (server === 1) {
+    data = coins.usdtCoins.slice(0, 100)
+} else if (server === 2) {
+    data = coins.usdtCoins.slice(100, 200)
+} else if (server === 3) {
+    data = coins.usdtCoins.slice(200, 300)
+} else if (server === 4) {
+    data = coins.usdtCoins.slice(300, 400)
+}
 
-// console.log(data)
+console.log(data)
 
 
 
@@ -43,12 +43,12 @@ module.exports = async () => {
 
 
 
-    let data = await usdt_coins.find({})
-    data = data.map(el => el.symbol)
+    // let data = await usdt_coins.find({})
+    // data = data.map(el => el.symbol)
 
     const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m']
 
-    // const timeframes = ['15m', '5m', '3m']
+    // const timeframes = ['3m']
 
     usdt_coins.watch().
         on('change', async (change) => {
@@ -278,15 +278,40 @@ module.exports = async () => {
                         }
                     )
                     requiredData.pop();
-
                     console.log('--->', el)
-                    let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 } })
+                    // let previousData = await tf.findOne({ symbol: el }, { data: { $slice: -4 }, candelsLength: { $size: '$data' } })
+                    let previousData = await tf.aggregate(
+                        [
+                            {
+                                $match: { symbol: el }
+                            },
 
+                            {
+                                $project: {
+                                    symbol: '$symbol',
+
+                                    candelsLength: { $size: '$data' },
+                                    data: {
+                                        $slice: ['$data', -4]
+                                    }
+                                }
+                            }
+                        ]
+                    )
+                    previousData = previousData[0]
+                    // console.log(previousData)
+                    console.log('---->', previousData.candelsLength)
                     let previousCandels = previousData.data;
                     let newCandels = requiredData
 
-                    console.log('previos,', previousCandels.length)
-                    console.log('new,', newCandels.length)
+
+
+                    // console.log('previos,', previousCandels.length)
+                    // console.log('new,', newCandels.length)
+
+
+
+
 
                     let newCandelsReal = []
 
@@ -314,7 +339,32 @@ module.exports = async () => {
                     }
 
                     console.log('real', newCandelsReal.length);
+                    let extra = 0;
 
+                    extra = (previousData.candelsLength * 1) - 1000
+
+                    extra = extra + newCandelsReal.length
+
+
+
+                    console.log('--->> Extra', extra)
+                    let extraArr = []
+                    if (extra > 0) {
+                        for (let index = 1; index <= extra; index++) {
+                            extraArr.push(index)
+                        }
+                    }
+                    console.log('--->> Extra Array', extraArr)
+                    extraArr.forEach(async element => {
+                        await tf.updateOne(
+                            { symbol: el },
+                            {
+                                $pop: {
+                                    data: -1
+                                }
+                            }
+                        )
+                    });
 
 
                     d.push({
@@ -325,7 +375,7 @@ module.exports = async () => {
                     console.log(data.length - 1)
                     if (d.length > data.length - 1) {
                         d.forEach(async element => {
-                            console.log(element.data[0])
+                            // console.log(element.data[0])
                             try {
 
                                 element.data.forEach(async el => {
