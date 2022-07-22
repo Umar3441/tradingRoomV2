@@ -46,7 +46,7 @@ module.exports = async () => {
     // let data = await usdt_coins.find({})
     // data = data.map(el => el.symbol)
 
-    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m', '3m']
+    const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m']
 
     // const timeframes = ['3m']
 
