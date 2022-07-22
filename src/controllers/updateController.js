@@ -3,34 +3,34 @@ const axios = require('axios');
 const schedule = require('node-schedule');
 const moment = require('moment')
 
-const d1_usdt_data = require('../models/d1_usdt_data')
-const h1_usdt_data = require('../models/h1_usdt_data')
-const h4_usdt_data = require('../models/h4_usdt_data')
-const h6_usdt_data = require('../models/h6_usdt_data')
-const h12_usdt_data = require('../models/h12_usdt_data')
-const m1_usdt_data = require('../models/m1_usdt_data')
-const m3_usdt_data = require('../models/m3_usdt_data')
-const m5_usdt_data = require('../models/m5_usdt_data')
-const m15_usdt_data = require('../models/m15_usdt_data')
-const m30_usdt_data = require('../models/m30_usdt_data')
-const usdt_coins = require('../models/usdt_coins')
+const d1_btc_data = require('../models/d1_btc_data')
+const h1_btc_data = require('../models/h1_btc_data')
+const h4_btc_data = require('../models/h4_btc_data')
+const h6_btc_data = require('../models/h6_btc_data')
+const h12_btc_data = require('../models/h12_btc_data')
+const m1_btc_data = require('../models/m1_btc_data')
+const m3_btc_data = require('../models/m3_btc_data')
+const m5_btc_data = require('../models/m5_btc_data')
+const m15_btc_data = require('../models/m15_btc_data')
+const m30_btc_data = require('../models/m30_btc_data')
+const btc_coins = require('../models/btc_coins')
 
 var cron = require('node-cron');
 const coins = require('../utils/data')
 
 const server = 1
 
-let data = coins.usdtCoins.slice(0, 100)
+let data = coins.btcCoins.slice(0, 100)
 
 
 if (server === 1) {
-    data = coins.usdtCoins.slice(0, 100)
+    data = coins.btcCoins.slice(0, 2)
 } else if (server === 2) {
-    data = coins.usdtCoins.slice(100, 200)
+    data = coins.btcCoins.slice(100, 200)
 } else if (server === 3) {
-    data = coins.usdtCoins.slice(200, 300)
+    data = coins.btcCoins.slice(200, 300)
 } else if (server === 4) {
-    data = coins.usdtCoins.slice(300, 400)
+    data = coins.btcCoins.slice(300, 400)
 }
 
 console.log(data)
@@ -43,19 +43,19 @@ module.exports = async () => {
 
 
 
-    // let data = await usdt_coins.find({})
+    // let data = await btc_coins.find({})
     // data = data.map(el => el.symbol)
 
     const timeframes = ['1d', '12h', '6h', '4h', '1h', '30m', '15m', '5m']
 
     // const timeframes = ['3m']
 
-    usdt_coins.watch().
+    btc_coins.watch().
         on('change', async (change) => {
 
             if (change.operationType === 'update') {
 
-                let deletedCoinPair = await usdt_coins.findByIdAndDelete(change.documentKey._id.toString())
+                let deletedCoinPair = await btc_coins.findByIdAndDelete(change.documentKey._id.toString())
 
                 timeframes.forEach(async timeframe => {
 
@@ -63,32 +63,32 @@ module.exports = async () => {
                     let tf = null
 
                     if (timeframe === '1d') {
-                        tf = d1_usdt_data
+                        tf = d1_btc_data
                     } else if (timeframe === '1h') {
-                        tf = h1_usdt_data
+                        tf = h1_btc_data
                     } else if (timeframe === '4h') {
-                        tf = h4_usdt_data
+                        tf = h4_btc_data
                     } else if (timeframe === '6h') {
-                        tf = h6_usdt_data
+                        tf = h6_btc_data
                     } else if (timeframe === '12h') {
-                        tf = h12_usdt_data
+                        tf = h12_btc_data
                     } else if (timeframe === '1m') {
-                        tf = m1_usdt_data
+                        tf = m1_btc_data
                     } else if (timeframe === '3m') {
-                        tf = m3_usdt_data
+                        tf = m3_btc_data
                     } else if (timeframe === '5m') {
-                        tf = m5_usdt_data
+                        tf = m5_btc_data
                     } else if (timeframe === '15m') {
-                        tf = m15_usdt_data
+                        tf = m15_btc_data
                     } else if (timeframe === '30m') {
-                        tf = m30_usdt_data
+                        tf = m30_btc_data
                     }
 
 
 
 
-                    // let deletedCoinPair = await usdt_coins.findByIdAndDelete(change.documentKey._id.toString())
-                    // let tempData = await usdt_coins.find({})
+                    // let deletedCoinPair = await btc_coins.findByIdAndDelete(change.documentKey._id.toString())
+                    // let tempData = await btc_coins.find({})
                     // data = tempData.map(el => el.symbol)
 
                     // console.log(data)
@@ -104,8 +104,8 @@ module.exports = async () => {
                     }
                 });
 
-                await usdt_coins.findByIdAndDelete(change.documentKey._id.toString())
-                let tempData = await usdt_coins.find({})
+                await btc_coins.findByIdAndDelete(change.documentKey._id.toString())
+                let tempData = await btc_coins.find({})
                 data = tempData.map(el => el.symbol)
 
                 console.log(data)
@@ -157,25 +157,25 @@ module.exports = async () => {
             let tf = null
 
             if (timeframe === '1d') {
-                tf = d1_usdt_data
+                tf = d1_btc_data
             } else if (timeframe === '1h') {
-                tf = h1_usdt_data
+                tf = h1_btc_data
             } else if (timeframe === '4h') {
-                tf = h4_usdt_data
+                tf = h4_btc_data
             } else if (timeframe === '6h') {
-                tf = h6_usdt_data
+                tf = h6_btc_data
             } else if (timeframe === '12h') {
-                tf = h12_usdt_data
+                tf = h12_btc_data
             } else if (timeframe === '1m') {
-                tf = m1_usdt_data
+                tf = m1_btc_data
             } else if (timeframe === '3m') {
-                tf = m3_usdt_data
+                tf = m3_btc_data
             } else if (timeframe === '5m') {
-                tf = m5_usdt_data
+                tf = m5_btc_data
             } else if (timeframe === '15m') {
-                tf = m15_usdt_data
+                tf = m15_btc_data
             } else if (timeframe === '30m') {
-                tf = m30_usdt_data
+                tf = m30_btc_data
             }
 
 
@@ -236,25 +236,25 @@ module.exports = async () => {
             let tf = null
 
             if (timeframe === '1d') {
-                tf = d1_usdt_data
+                tf = d1_btc_data
             } else if (timeframe === '1h') {
-                tf = h1_usdt_data
+                tf = h1_btc_data
             } else if (timeframe === '4h') {
-                tf = h4_usdt_data
+                tf = h4_btc_data
             } else if (timeframe === '6h') {
-                tf = h6_usdt_data
+                tf = h6_btc_data
             } else if (timeframe === '12h') {
-                tf = h12_usdt_data
+                tf = h12_btc_data
             } else if (timeframe === '1m') {
-                tf = m1_usdt_data
+                tf = m1_btc_data
             } else if (timeframe === '3m') {
-                tf = m3_usdt_data
+                tf = m3_btc_data
             } else if (timeframe === '5m') {
-                tf = m5_usdt_data
+                tf = m5_btc_data
             } else if (timeframe === '15m') {
-                tf = m15_usdt_data
+                tf = m15_btc_data
             } else if (timeframe === '30m') {
-                tf = m30_usdt_data
+                tf = m30_btc_data
             }
 
 

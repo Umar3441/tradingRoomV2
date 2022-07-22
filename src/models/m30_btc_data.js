@@ -12,4 +12,4 @@ const schema = new mongoose.Schema({
         [String]
     ]
 })
-module.exports = mongoose.model('m30_usdt_data', schema, 'm30_usdt_data')
+module.exports = mongoose.model('m30_btc_data', schema, 'm30_btc_data')

@@ -16,4 +16,4 @@ const schema = new mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model('usdt_coins', schema, 'usdt_coins')
+module.exports = mongoose.model('btc_coins', schema, 'btc_coins')

@@ -9,7 +9,7 @@ const moment = require('moment')
 const errorHandler = require('./src/controllers/errorController')
 const AppError = require('./src/utils/appError')
 const updateController = require('./src/controllers/updateController')
-const usdt_coins = require('./src/models/usdt_coins')
+const btc_coins = require('./src/models/btc_coins')
 
 
 

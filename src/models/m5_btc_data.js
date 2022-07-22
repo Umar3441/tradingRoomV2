@@ -10,7 +10,6 @@ const schema = new mongoose.Schema({
     },
     data: [
         [String]
-    ],
-
+    ]
 })
-module.exports = mongoose.model('m3_usdt_data', schema, 'm3_usdt_data')
+module.exports = mongoose.model('m5_btc_data', schema, 'm5_btc_data')
