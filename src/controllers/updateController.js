@@ -356,14 +356,21 @@ module.exports = async () => {
                     }
                     console.log('--->> Extra Array', extraArr)
                     extraArr.forEach(async element => {
-                        await tf.updateOne(
-                            { symbol: el },
-                            {
-                                $pop: {
-                                    data: -1
+
+                        try {
+                            await tf.updateOne(
+                                { symbol: el },
+                                {
+                                    $pop: {
+                                        data: -1
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        } catch (error) {
+                            console.log(error)
+                        }
+
+
                     });
 
 
@@ -380,14 +387,19 @@ module.exports = async () => {
 
                                 element.data.forEach(async el => {
 
-                                    await tf.updateOne(
-                                        { symbol: element.symbol },
-                                        {
-                                            $push: {
-                                                data: el
+                                    try {
+                                        await tf.updateOne(
+                                            { symbol: element.symbol },
+                                            {
+                                                $push: {
+                                                    data: el
+                                                }
                                             }
-                                        }
-                                    )
+                                        )
+                                    } catch (error) {
+                                        console.log(error)
+                                    }
+
                                 });
                             } catch (error) {
                                 console.log(error)
