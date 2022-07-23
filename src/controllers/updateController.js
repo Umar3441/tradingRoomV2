@@ -387,14 +387,19 @@ module.exports = async () => {
 
                                 element.data.forEach(async el => {
 
-                                    await tf.updateOne(
-                                        { symbol: element.symbol },
-                                        {
-                                            $push: {
-                                                data: el
+                                    try {
+                                        await tf.updateOne(
+                                            { symbol: element.symbol },
+                                            {
+                                                $push: {
+                                                    data: el
+                                                }
                                             }
-                                        }
-                                    )
+                                        )
+                                    } catch (error) {
+                                        console.log(error)
+                                    }
+
                                 });
                             } catch (error) {
                                 console.log(error)
