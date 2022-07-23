@@ -24,7 +24,7 @@ let data = coins.btcCoins.slice(0, 100)
 
 
 if (server === 1) {
-    data = coins.btcCoins.slice(0, 100)
+    data = coins.btcCoins.slice(0, 2)
 } else if (server === 2) {
     data = coins.btcCoins.slice(100, 200)
 } else if (server === 3) {
