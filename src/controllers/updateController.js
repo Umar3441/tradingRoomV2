@@ -104,6 +104,7 @@ module.exports = async () => {
                     }
                 });
 
+
                 await usdt_coins.findByIdAndDelete(change.documentKey._id.toString())
                 let tempData = await usdt_coins.find({})
                 data = tempData.map(el => el.symbol)
@@ -356,14 +357,20 @@ module.exports = async () => {
                     }
                     console.log('--->> Extra Array', extraArr)
                     extraArr.forEach(async element => {
-                        await tf.updateOne(
-                            { symbol: el },
-                            {
-                                $pop: {
-                                    data: -1
+
+                        try {
+                            await tf.updateOne(
+                                { symbol: el },
+                                {
+                                    $pop: {
+                                        data: -1
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        } catch (error) {
+                            console.log(error)
+                        }
+
                     });
 
 
